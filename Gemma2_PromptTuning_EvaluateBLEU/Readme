@@ -1,0 +1,87 @@
+# Prompt Tuning Gemma-2 9B for English → Persian Translation
+# Project Overview
+This project explores parameter-efficient fine-tuning (PEFT) using Prompt Tuning on a large language model (Gemma-2 9B Instruct) for the task of English → Persian machine translation.
+Instead of fine-tuning all model weights, this approach learns a small set of trainable virtual prompt tokens, making it:
+•	memory efficient
+•	fast to train
+•	suitable for low-resource settings
+________________________________________
+ Objective
+•	Evaluate baseline translation performance of Gemma-2 9B
+•	Apply Prompt Tuning (PEFT method)
+•	Train on a small parallel dataset (10 sentence pairs)
+•	Measure improvement using BLEU score
+•	Analyze effect of lightweight adaptation on translation quality
+________________________________________
+ Model Used
+🔹 Gemma-2 9B Instruct
+•	Large instruction-tuned causal language model
+•	Loaded in 4-bit quantized mode (BitsAndBytes)
+•	Supports efficient inference on limited hardware
+________________________________________
+ Dataset
+A small custom parallel dataset:
+•	10 English sentences
+•	10 Persian translations
+Used for:
+•	Prompt tuning training
+•	Evaluation before and after adaptation
+•	BLEU score computation
+________________________________________
+ Methodology
+🔹 1. Baseline Evaluation
+•	Model used without any adaptation
+•	Translation performed using prompt:
+Translate the following sentence to Persian:
+{sentence}
+Translation:
+•	BLEU score computed using SacreBLEU
+________________________________________
+🔹 2. Prompt Tuning (PEFT)
+Instead of updating full model weights:
+•	Introduced 20 virtual tokens
+•	Only prompt embeddings were trained
+•	Model parameters were frozen
+Configuration:
+•	Task: Causal Language Modeling
+•	Virtual tokens: 20
+•	Token dimension: model hidden size
+•	Optimizer: AdamW (lr = 1e-3)
+________________________________________
+🔹 3. Training Strategy
+•	Micro-batch training on 10 sentence pairs
+•	5 training epochs
+•	Loss computed using token-level supervision
+•	Gradient updates applied only to prompt tokens
+________________________________________
+🔹 4. Evaluation Metric
+•	BLEU score (SacreBLEU)
+•	Comparison:
+o	Before Prompt Tuning
+o	After Prompt Tuning
+________________________________________
+ Results
+Model Stage	BLEU Score
+Before tuning	~2.83
+After tuning	~5.10
+Improvement	+2.27
+________________________________________
+ Key Findings
+•	Even with very small dataset (10 samples), prompt tuning improves performance
+•	Virtual tokens help guide model behavior without full fine-tuning
+•	Gemma-2 9B can adapt to translation tasks using minimal updates
+•	BLEU improvement confirms effectiveness of PEFT approach
+________________________________________
+
+Tech Stack
+•	Python
+•	PyTorch
+•	Hugging Face Transformers
+•	PEFT (Prompt Tuning)
+•	BitsAndBytes (4-bit quantization)
+•	SacreBLEU
+________________________________________
+ Conclusion
+This project demonstrates how Prompt Tuning (PEFT) can efficiently adapt large language models like Gemma-2 9B to a new task (English → Persian translation) using minimal computational resources.
+Despite using a very small dataset, the method shows measurable improvement, highlighting the potential of parameter-efficient learning for low-resource NLP tasks.
+
