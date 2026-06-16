@@ -1,0 +1,103 @@
+# Direct Preference Optimization (DPO) Fine-Tuning of Qwen2.5-0.5B-Instruct
+# Project Overview
+This project explores alignment of large language models (LLMs) using Direct Preference Optimization (DPO) on the Qwen2.5-0.5B-Instruct model.
+Instead of traditional supervised fine-tuning, this approach trains the model using preference pairs (chosen vs. rejected responses), enabling the model to better follow instructions and align with human-like preferences.
+The dataset used is Intel/orca_dpo_pairs, a high-quality instruction-following preference dataset.
+________________________________________
+ Objectives
+•	Evaluate baseline instruction-following ability of Qwen2.5-0.5B
+•	Train the model using DPO (Direct Preference Optimization)
+•	Improve response quality using preference learning
+•	Compare model behavior before and after alignment
+•	Study lightweight alignment techniques for small LLMs
+________________________________________
+ Model Used
+🔹 Qwen2.5-0.5B-Instruct
+•	Compact instruction-tuned transformer model
+•	Optimized for chat and instruction tasks
+•	Used as base model for DPO alignment
+________________________________________
+Dataset
+ Intel/orca_dpo_pairs
+Each sample contains:
+•	system (optional system instruction)
+•	question (user query)
+•	chosen (preferred response)
+•	rejected (lower-quality response)
+Dataset split:
+•	1026 samples for training
+•	Remaining samples for validation
+________________________________________
+ Methodology
+🔹 1. Prompt Construction
+Two prompt formats were explored:
+•	Simple instruction format:
+system + question → prompt
+•	Chat-style format (Qwen template):
+<|im_start|>user
+...
+<|im_end|>
+<|im_start|>assistant
+This ensures compatibility with instruction-tuned LLM structure.
+________________________________________
+🔹 2. Baseline Evaluation
+Before training, the model was evaluated using:
+•	Text generation pipeline
+•	Sampling-based decoding (temperature = 0.7)
+This established a baseline for instruction-following behavior.
+________________________________________
+🔹 3. DPO Training
+The model was fine-tuned using Direct Preference Optimization (DPO):
+Key Training Settings:
+•	Epochs: 3
+•	Batch size: 1
+•	Gradient accumulation: 4
+•	Precision: bf16
+•	Evaluation: every epoch
+•	Metric: evaluation loss
+Learning Objective:
+The model learns to:
+•	Increase probability of chosen responses
+•	Decrease probability of rejected responses
+without requiring reinforcement learning or reward models.
+________________________________________
+📈 Results (Qualitative)
+After DPO fine-tuning:
+Improvements observed:
+•	Better instruction adherence
+•	More relevant and helpful responses
+•	Reduced hallucination in ambiguous prompts
+•	Improved alignment with preferred answers
+Before vs After:
+Stage	Behavior
+Base model	Sometimes verbose or less structured
+DPO model	More controlled, preference-aligned responses
+________________________________________
+🔍 Key Insights
+•	DPO is a stable and simple alternative to RLHF
+•	Works effectively even on small-scale models (0.5B)
+•	Preference pairs are sufficient to guide alignment
+•	No reward model or reinforcement learning required
+•	Chat formatting significantly impacts performance
+________________________________________
+⚠️ Challenges
+•	Dataset formatting inconsistencies (system + question handling)
+•	Memory constraints during training
+•	Sensitivity to prompt structure
+•	Need for careful chat-template design
+________________________________________
+🧰 Tech Stack
+•	Python
+•	PyTorch
+•	Hugging Face Transformers
+•	TRL (Transformer Reinforcement Learning)
+•	Datasets library
+•	BitsAndBytes (for efficient loading)
+________________________________________
+⭐ Conclusion
+This project demonstrates how Direct Preference Optimization (DPO) can be used to efficiently align a small LLM (Qwen2.5-0.5B) with human preferences.
+It highlights that:
+•	LLM alignment does not require full RLHF pipelines
+•	Preference-based training significantly improves instruction-following behavior
+•	Even lightweight models benefit from DPO training
+________________________________________
