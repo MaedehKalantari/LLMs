@@ -1,0 +1,89 @@
+# Project Title
+Parameter-Efficient Fine-Tuning (PEFT) of a Persian BERT Model for Named Entity
+Recognition
+1. Project Objective
+The goal of this project is to fine-tune a pre-trained Persian language model using ParameterEfficient Fine-Tuning (PEFT), specifically the LoRA (Low-Rank Adaptation) method, for the
+task of Named Entity Recognition (NER).
+The task is formulated as binary token classification, where:
+• Label 1 → Token is part of a named entity (person name)
+• Label 0 → Token is not a named entity
+2. Dataset Description
+The dataset consists of multiple .txt files, where each file contains token-level annotations in the
+following format:
+• Each line contains one token and its binary NER label.
+• Sentences are separated by empty lines.
+• Labels were already provided in binary format (0/1), so no additional label mapping was
+required.
+3. Model and Tokenizer
+We selected the following pre-trained Persian language model from Hugging Face:
+• Model: HooshvareLab/bert-fa-base-uncased
+• Architecture: BERT
+• Task Type: Token Classification
+• Number of Labels: 2 (entity / non-entity)
+The corresponding tokenizer was loaded to ensure consistency between text processing and model
+inputs.4. Data Preprocessing
+4.1 Reading the Dataset
+All text files in the dataset directory were read and combined.
+For each sentence:
+• Tokens were stored as a list of words.
+• Labels were stored as a list of integers (0 or 1).
+4.2 Tokenization and Label Alignment
+Since BERT uses subword tokenization, some words are split into multiple sub-tokens.
+To correctly train the model:
+• Tokenization was performed with is_split_into_words=True
+• Labels were aligned using word_ids()
+• Sub-tokens inherited the label of the original word
+• Special tokens were assigned the label -100 so they are ignored during loss computation
+This step is essential for correct token-level supervision.
+5. Dataset Splitting
+The dataset was split into three subsets:
+This allows:
+• Model training on the training set
+• Hyperparameter monitoring on the validation set
+• Final unbiased evaluation on the test set
+6. Parameter-Efficient Fine-Tuning (PEFT)
+6.1 LoRA Configuration
+LoRA was applied to the attention layers (query and value) with the following configuration:
+• Rank (r) = 8
+• LoRA scaling factor (alpha) = 32
+• Dropout = 0.1
+• Task type = TOKEN_CLS
+7. Model TrainingThe model was trained using Hugging Face’s Trainer API with:
+• Mixed-precision training (fp16)
+• Mini-batch training
+• Validation performed periodically during training
+• Cross-entropy loss at the token level
+The training objective was to correctly classify each token as entity (1) or non-entity (0).
+8. Model Evaluation
+8.1 Evaluation Metrics
+The trained model was evaluated on the test set using standard NER metrics at the token level:
+• Precision
+• Recall
+• F1-score
+Special tokens and padding tokens (label -100) were excluded from evaluation.
+8.2 Results Interpretation
+The evaluation results show that the model is capable of:
+• Identifying named entities in Persian news-style text
+• Distinguishing entity tokens from non-entity tokens
+• Generalizing beyond the training data
+The LoRA-based fine-tuning achieved competitive performance while training only a small
+fraction of the model parameters.
+9. Challenges and Solutions
+9.1 Tokenization Alignment
+Challenge: Subword tokenization complicates label assignment.
+Solution: Used word-level alignment via word_ids() and ignored non-word tokens.
+9.2 Resource Constraints
+Challenge: Full fine-tuning of BERT is expensive.
+Solution: Used PEFT (LoRA) to significantly reduce trainable parameters.9.3 Colab Library Conflicts
+Challenge: Version inconsistencies in Colab.
+Solution: Used stable training arguments and avoided version-dependent features.
+10. Conclusion
+In this project, we successfully fine-tuned a Persian BERT model for Named Entity Recognition
+using Parameter-Efficient Fine-Tuning (LoRA).
+Key achievements:
+• Implemented a complete NER pipeline
+• Reduced training cost via PEFT
+• Achieved reliable token-level entity detection
+• Built a scalable and efficient training framework
+This project demonstrates the practical effectiveness of PEFT methods for adapting large
+language models to low-resource and domain-specific NLP tasks.
