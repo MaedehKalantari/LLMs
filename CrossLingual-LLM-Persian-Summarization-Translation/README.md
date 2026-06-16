@@ -1,6 +1,5 @@
-Multilingual LLM Study: 
-# Persian Dialogue Summarization & Translation
-#Overview
+ # Persian Dialogue Summarization & Translation
+# Overview
 This project explores the capabilities and limitations of large language models (LLMs) for Persian language understanding, including:
 •	Zero-shot dialogue summarization
 •	Machine translation (Persian → English)
@@ -27,7 +26,7 @@ Models Used
 •	Sequence-to-sequence instruction-tuned model
 •	Strong in English NLP tasks
 •	Limited performance on Persian text due to tokenizer coverage
-📌 Observation:
+ Observation:
 •	Poor handling of Persian characters
 •	Tokenizer struggles with non-Latin scripts
 ________________________________________
@@ -35,7 +34,7 @@ ________________________________________
 •	Multilingual seq2seq model (50 languages)
 •	Supports Persian (fa_IR) explicitly
 •	Designed for translation and cross-lingual tasks
-📌 Observation:
+ Observation:
 •	Correctly tokenizes Persian text
 •	Produces meaningful summaries and translations
 •	Requires language-specific configuration (src_lang, tgt_lang)
@@ -44,13 +43,13 @@ ________________________________________
 •	Large causal language model
 •	Strong general reasoning ability
 •	Works via prompting (no task-specific training)
-📌 Observation:
+ Observation:
 •	Performs well with structured prompts
 •	Handles both summarization and translation reasonably
 •	Requires careful prompt design
 ________________________________________
 Tasks
-🧠 Task 1: Zero-Shot Summarization (mBART-50)
+ Task 1: Zero-Shot Summarization (mBART-50)
 A Persian dialogue is summarized without fine-tuning.
 Prompt Example:
 Summarize the following Persian text in Persian:
@@ -58,21 +57,21 @@ Summarize the following Persian text in Persian:
 Key Techniques:
 •	forced_bos_token_id = fa_IR
 •	Ensures output is generated in Persian
-📌 Result:
+ Result:
 •	Coherent summaries in Persian
 •	Good preservation of dialogue meaning
 ________________________________________
-🌐 Task 2: Persian → English Translation (mBART-50)
+ Task 2: Persian → English Translation (mBART-50)
 The same dialogue is translated into English.
 Configuration:
 •	src_lang = fa_IR
 •	tgt_lang = en_XX
-📌 Result:
+ Result:
 •	High-quality translation
 •	Preserves conversational structure
 •	Strong performance due to multilingual training
 ________________________________________
-🤖 Task 3: LLM Comparison with Mistral-7B
+ Task 3: LLM Comparison with Mistral-7B
 The same tasks are performed using a causal LLM:
 •	Summarization (Persian output)
 •	Translation (English output)
@@ -80,12 +79,12 @@ Prompting Strategy:
 •	Explicit instruction prompts:
 o	“Summarize the following Persian dialogue…”
 o	“Translate the following Persian dialogue into English…”
-📌 Inference settings:
+ Inference settings:
 •	Beam search (num_beams=5)
 •	Controlled decoding (no_repeat_ngram_size=2)
 •	Early stopping enabled
 ________________________________________
-🔍 Key Findings
+ Key Findings
 1. Tokenizer Limitations Matter
 •	FLAN-T5 fails on Persian input due to tokenizer mismatch
 •	Shows importance of language coverage in pretraining
@@ -101,7 +100,7 @@ FLAN-T5	Instruction following	Poor Persian support
 mBART-50	Strong multilingual ability	Less flexible reasoning
 Mistral-7B	Strong reasoning	Sensitive to prompts
 ________________________________________
-🧪 Technologies Used
+ Technologies Used
 •	Python
 •	Hugging Face Transformers
 •	mBART-50
@@ -117,5 +116,5 @@ This project demonstrates that:
 •	Prompt engineering enables strong zero-shot performance in large causal models
 •	Model selection significantly impacts performance in low-resource languages
 ________________________________________
-🚀 Key Insight
+Key Insight
 “A model is only as multilingual as its tokenizer and pretraining data.”
