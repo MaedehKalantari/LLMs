@@ -1,0 +1,118 @@
+# English → Persian Translation Benchmark using LLMs (MBART, FLAN-T5, Gemma)
+# Project Overview
+This project explores and compares different Large Language Models (LLMs) for English → Persian translation, using both:
+•	Pretrained multilingual seq2seq models (MBART)
+•	Instruction-based models (FLAN-T5)
+•	Large instruction-tuned LLMs (Gemma)
+•	Prompt engineering and in-context learning (few-shot prompting)
+•	Evaluation using BLEU score (SacreBLEU)
+The main goal is to analyze how model architecture and prompting strategies affect translation quality, especially for low-resource languages like Persian.
+________________________________________
+🎯 Objectives
+•	Evaluate baseline translation performance of MBART without prompting
+•	Improve translation using few-shot in-context learning (ICL)
+•	Analyze issues in instruction-following for seq2seq models
+•	Compare LLM-based translation with Google Translate baseline
+•	Experiment with larger instruction-tuned models (Gemma)
+•	Evaluate all systems using BLEU score
+________________________________________
+🧠 Models Used
+1. MBART (facebook/mbart-large-50-many-to-many-mmt)
+•	Multilingual seq2seq model
+•	Supports Persian (fa_IR)
+•	Used for baseline translation and few-shot prompting
+2. FLAN-T5 (google/flan-t5-base)
+•	Instruction-tuned model
+•	Tested for zero-shot summarization and multilingual limitations
+3. Gemma (google/gemma-2-9b-it)
+•	Large instruction-tuned LLM
+•	Used for improved translation with few-shot prompting
+________________________________________
+📊 Dataset
+A custom parallel dataset of:
+•	10 English sentences
+•	10 Persian reference translations
+Used for:
+•	Translation benchmarking
+•	BLEU score evaluation
+•	Prompt engineering experiments
+________________________________________
+⚙️ Methodology
+🔹 1. Baseline Translation (MBART)
+•	Direct translation without prompting
+•	Measures raw capability of pretrained model
+•	Shows limitations in instruction-following behavior
+________________________________________
+🔹 2. Few-Shot In-Context Learning (ICL)
+•	Added example sentence pairs in prompt
+•	Structured prompt format:
+English: ...
+Persian: ...
+
+English: ...
+Persian: ...
+•	Improved contextual understanding
+________________________________________
+🔹 3. Output Post-Processing
+MBART often:
+•	Repeats prompts
+•	Generates structured text instead of only translation
+To fix this:
+•	Custom cleaning function extracts only final Persian output
+________________________________________
+🔹 4. Evaluation Metric
+•	BLEU score (using sacrebleu)
+•	Comparison with Google Translate baseline
+________________________________________
+🔹 5. Gemma Experiments
+•	Used instruction-tuned LLM (Gemma 2B / 9B)
+•	Applied few-shot prompting
+•	Controlled decoding:
+o	temperature
+o	repetition penalty
+o	beam search
+________________________________________
+📈 Results Summary
+Model	Approach	Performance
+MBART	Zero-shot	Baseline (~28 BLEU)
+MBART + ICL	Few-shot prompting	Improved consistency
+Gemma	Instruction + ICL	More fluent translations
+Google Translate	External baseline	Strong reference system
+________________________________________
+🔍 Key Findings
+•	MBART is strong for translation but not instruction-following
+•	Few-shot prompting improves structure but may cause repetition
+•	Post-processing is necessary for clean evaluation
+•	Larger instruction-tuned models (Gemma) produce:
+o	More fluent outputs
+o	Better prompt adherence
+•	BLEU score alone does not capture all quality aspects
+________________________________________
+⚠️ Challenges
+•	Prompt repetition in MBART outputs
+•	Tokenization differences across models
+•	Handling Persian language formatting
+•	Context window limitations (512 tokens in MBART)
+•	Ensuring fair BLEU evaluation after post-processing
+________________________________________
+🧰 Tech Stack
+•	Python
+•	Hugging Face Transformers
+•	PyTorch
+•	SacreBLEU
+•	Google Translate API
+•	MBART / FLAN-T5 / Gemma
+
+________________________________________
+⭐ Conclusion
+This project demonstrates how:
+•	Prompt engineering
+•	Model choice
+•	Few-shot learning
+•	Post-processing
+can significantly impact LLM performance in multilingual tasks.
+It highlights the gap between:
+•	pretrained seq2seq models (MBART)
+•	instruction-tuned LLMs (Gemma)
+and shows how modern LLM techniques improve translation quality for low-resource languages like Persian.
+
