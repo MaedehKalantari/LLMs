@@ -1,0 +1,97 @@
+# QLoRA Fine-Tuning of TinyLlama for News Summarization (CNN/DailyMail)
+# Overview
+This project implements efficient fine-tuning of a large language model (LLM) using QLoRA (Quantized Low-Rank Adaptation). The goal is to adapt the lightweight model TinyLlama-1.1B-Chat for the task of abstractive news summarization using the CNN/DailyMail dataset.
+The model is trained to generate concise and meaningful summaries (highlights) from full news articles while maintaining computational efficiency.
+________________________________________
+Objective
+The main objectives of this project are:
+•	Fine-tune a pre-trained LLM for news summarization
+•	Apply Parameter-Efficient Fine-Tuning (PEFT) using LoRA
+•	Reduce memory and compute requirements using 4-bit quantization
+•	Evaluate generated summaries using ROUGE metrics
+•	Demonstrate efficient adaptation of LLMs on limited resources
+________________________________________
+Dataset
+•	Dataset: CNN/DailyMail (version 3.0.0)
+•	Source: Hugging Face Datasets
+•	Task: Abstractive summarization
+Data Structure:
+•	Input: Full news article
+•	Target: Human-written summary (highlights)
+A small subset (1% of the training set) was used for experimentation due to computational constraints.
+________________________________________
+Model Architecture
+Base Model
+•	TinyLlama/TinyLlama-1.1B-Chat-v1.0
+•	Lightweight causal language model designed for instruction-based tasks
+________________________________________
+Efficient Training Strategy
+1. Quantization (QLoRA Setup)
+To reduce memory usage and enable efficient training:
+•	4-bit quantization using NF4 format
+•	Mixed precision (FP16)
+•	Device mapping: automatic GPU allocation
+________________________________________
+2. LoRA Fine-Tuning
+Only a small subset of parameters was trained using LoRA adapters:
+•	Rank (r): 8
+•	Alpha: 32
+•	Dropout: 0.05
+•	Target modules: q_proj, v_proj
+•	Task type: Causal Language Modeling
+📌 Only ~0.1% of total parameters were trainable.
+________________________________________
+Data Preprocessing
+Each sample was transformed into a supervised learning format:
+Summarize the following news article:
+{article}
+Summary:
+Labeling Strategy:
+•	The input (prompt + summary) is tokenized
+•	Loss is computed only on the summary portion
+•	Prompt tokens are masked using -100 to avoid influencing training loss
+________________________________________
+Training Configuration
+•	Framework: Hugging Face Trainer API
+•	Batch size: 1
+•	Gradient accumulation: 4
+•	Learning rate: 2e-4
+•	Epochs: 1
+•	Precision: FP16
+•	Optimization: QLoRA + LoRA adapters
+________________________________________
+Evaluation
+The model is evaluated using the ROUGE metric, which measures overlap between generated and reference summaries.
+Metrics:
+•	ROUGE-1
+•	ROUGE-2
+•	ROUGE-L
+Evaluation Process:
+•	Generate summaries for test articles
+•	Compare model outputs with ground-truth highlights
+•	Compute ROUGE scores using evaluate library
+________________________________________
+Results & Observations
+•	The model successfully generates coherent and relevant summaries
+•	QLoRA significantly reduces training cost while maintaining performance
+•	Generated outputs capture key information from news articles
+•	ROUGE scores indicate reasonable performance given limited training data
+________________________________________
+Key Contributions
+•	Implemented a full LLM fine-tuning pipeline using QLoRA
+•	Demonstrated efficient training on limited GPU resources
+•	Applied PEFT techniques for large-scale model adaptation
+•	Built an end-to-end summarization system using TinyLlama
+________________________________________
+Technologies Used
+•	Python
+•	PyTorch
+•	Hugging Face Transformers
+•	PEFT (LoRA / QLoRA)
+•	BitsAndBytes
+•	Datasets
+•	Evaluate (ROUGE)
+________________________________________
+Conclusion
+This project demonstrates how large language models can be efficiently fine-tuned using QLoRA for real-world NLP tasks such as news summarization. It highlights the effectiveness of parameter-efficient methods in reducing computational cost while maintaining strong generative performance.
+________________________________________
