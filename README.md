@@ -1,4 +1,4 @@
-#  LLMs Research & Applications Portfolio
+#  LLMs Applications
 
 This repository contains a collection of Large Language Model (LLM) projects exploring modern NLP techniques, including prompt engineering, parameter-efficient fine-tuning, instruction tuning, retrieval-augmented generation (RAG), and multilingual NLP.
 
