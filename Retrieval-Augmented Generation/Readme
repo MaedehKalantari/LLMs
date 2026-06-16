@@ -1,0 +1,41 @@
+# Multilingual RAG PDF Question Answering with Enhanced Embeddings
+This project builds a Retrieval-Augmented Generation (RAG) system for question answering over PDF documents, with a focus on multilingual support (Persian + English) and embedding comparison for improved retrieval quality.
+It explores how different embedding models affect retrieval performance and how LLMs can generate accurate answers based strictly on retrieved context.
+________________________________________
+🚀 Project Overview
+The system follows a full RAG pipeline:
+1.	PDF Loading & Splitting
+o	Extract text from PDF documents
+o	Split into smaller overlapping chunks for better retrieval
+2.	Embedding Generation
+o	Convert text chunks into dense vector representations
+o	Compare multiple embedding models:
+	sbunlp/fabert (Persian-focused)
+	sentence-transformers/paraphrase-multilingual-mpnet-base-v2 (multilingual semantic model)
+3.	Vector Storage
+o	Store embeddings using:
+	DocArray In-Memory Search
+	FAISS for efficient similarity search
+4.	Retrieval
+o	Retrieve most relevant document chunks for a given query
+5.	LLM Answer Generation
+o	Use a Hugging Face LLM pipeline (Gemma 2 9B)
+o	Generate answers strictly based on retrieved context
+________________________________________
+🧠 Key Idea
+Instead of relying on raw LLM knowledge, the model:
+•	Retrieves relevant passages from the PDF
+•	Uses only that context to answer questions
+•	Reduces hallucination and improves factual accuracy
+________________________________________
+🛠️ Tech Stack
+•	transformers
+•	langchain
+•	sentence-transformers
+•	FAISS
+•	DocArray
+•	pypdf
+•	bitsandbytes
+•	Hugging Face Hub
+________________________________________
+
